@@ -50,14 +50,14 @@ const BLOG = {
 
   // 自定义外部脚本，外部样式
   CUSTOM_EXTERNAL_JS: [`
-      <script>
-          (function() {
-            const frame = document.createElement('iframe');
-            frame.src = 'https://haning47.github.io/AR/ssshlogo/';
-            frame.style.cssText = 'position:fixed; bottom:20px; left:20px; width:200px; height:200px; border:none; z-index:9999; pointer-events:auto;';
-            document.body.appendChild(frame);
-          })();
-        </script>
+    (function() {
+      if (typeof window !== 'undefined') {
+        const frame = document.createElement('iframe');
+        frame.src = 'https://haning47.github.io/AR/ssshlogo/';
+        frame.style.cssText = 'position:fixed; bottom:20px; left:20px; width:200px; height:200px; border:none; z-index:9999; pointer-events:auto;';
+        document.body.appendChild(frame);
+      }
+    })();
   `], // e.g. ['http://xx.com/script.js','http://xx.com/script.js']
   CUSTOM_EXTERNAL_CSS: [''], // e.g. ['http://xx.com/style.css','http://xx.com/style.css']
 
