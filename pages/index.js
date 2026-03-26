@@ -59,7 +59,11 @@ export async function getStaticProps(req) {
   // 生成robotTxt
   generateRobotsTxt(props)
   // 生成Feed订阅
-  generateRss(props)
+  //generateRss(props)
+  const rssAllPosts = props.allPages?.filter(
+	page => page.type === 'Post' && page.status === 'Published'
+  )
+  generateRss({ ...props, latestPosts: rssAllPosts })
   // 生成
   generateSitemapXml(props)
   // 检查数据是否需要从algolia删除
