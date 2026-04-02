@@ -326,7 +326,9 @@ const nextConfig = {
   experimental: {
     scrollRestoration: true,
     // 性能优化实验性功能
-    optimizePackageImports: ['@heroicons/react', 'lodash']
+    optimizePackageImports: ['@heroicons/react', 'lodash'],
+    workerThreads: false,
+    cpus: 1    
   },
   exportPathMap: function (
     defaultPathMap,
