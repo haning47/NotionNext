@@ -9,12 +9,7 @@ import BLOG from './blog.config'
  */
 export const config = {
   // 这里设置白名单，防止静态资源被拦截
-  matcher: [
-    '/rss/feed.xml', // 封鎖 RSS 機器人
-    '/((?!.*\\..*|_next|/sign-in|/auth).*)',
-    '/',
-    '/(api|trpc)(.*)'
-  ]
+  matcher: ['/((?!.*\\..*|_next|/sign-in|/auth).*)', '/', '/(api|trpc)(.*)']
 }
 
 // 限制登录访问的路由
@@ -39,11 +34,6 @@ const isTenantAdminRoute = createRouteMatcher([
  */
 // eslint-disable-next-line @typescript-eslint/require-await, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 const noAuthMiddleware = async (req: NextRequest, ev: any) => {
-  // 封鎖 RSS，避免機器人消耗 CPU
-  if (req.nextUrl.pathname === '/rss/feed.xml') {
-    return new NextResponse(null, { status: 404 })
-  }
-
   // 如果没有配置 Clerk 相关环境变量，返回一个默认响应或者继续处理请求
   if (BLOG['UUID_REDIRECT']) {
     let redirectJson: Record<string, string> = {}
@@ -70,17 +60,11 @@ const noAuthMiddleware = async (req: NextRequest, ev: any) => {
   }
   return NextResponse.next()
 }
-
 /**
  * 鉴权中间件
  */
 const authMiddleware = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
   ? clerkMiddleware((auth, req) => {
-      // 封鎖 RSS，避免機器人消耗 CPU
-      if (req.nextUrl.pathname === '/rss/feed.xml') {
-        return new NextResponse(null, { status: 404 })
-      }
-
       const { userId } = auth()
       // 处理 /dashboard 路由的登录保护
       if (isTenantRoute(req)) {
